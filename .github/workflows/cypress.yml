@@ -58,7 +58,7 @@ jobs:
         run: composer install --no-dev
 
       - name: Set up node
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version-file: 'package.json'
 
@@ -68,7 +68,7 @@ jobs:
           TESTING=true npm run build --if-present
 
       - name: Save context
-        uses: buildjet/cache/save@3e70d19e31d6a8030aeddf6ed8dbe601f94d09f4 # v4.0.2
+        uses: actions/cache/save@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           key: cypress-context-${{ github.run_id }}
           path: ./
@@ -88,7 +88,7 @@ jobs:
 
     steps:
       - name: Restore context
-        uses: buildjet/cache/restore@3e70d19e31d6a8030aeddf6ed8dbe601f94d09f4 # v4.0.2
+        uses: actions/cache/restore@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           fail-on-cache-miss: true
           key: cypress-context-${{ github.run_id }}
@@ -99,7 +99,7 @@ jobs:
         id: versions
 
       - name: Set up node
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version: ${{ steps.versions.outputs.node-version }}
 
@@ -107,7 +107,7 @@ jobs:
         run: npm i -g 'npm@${{ steps.versions.outputs.package-manager-version }}'
 
       - name: Run ${{ startsWith(matrix.containers, 'component') && 'component' || 'E2E' }} cypress tests
-        uses: cypress-io/github-action@783cb3f07983868532cabaedaa1e6c00ff4786a8 # v7.1.9
+        uses: cypress-io/github-action@4c06c48f3ffea349b7189aa06dfcda47a9fa7b92 # v7.1.8
         with:
           record: ${{ secrets.CYPRESS_RECORD_KEY && true }} # zizmor: ignore[secrets-outside-env]
           parallel: ${{ secrets.CYPRESS_RECORD_KEY && true }} # zizmor: ignore[secrets-outside-env]
@@ -130,7 +130,7 @@ jobs:
           CYPRESS_GROUP: Run ${{ startsWith(matrix.containers, 'component') && 'component' || 'E2E' }}
 
       - name: Upload snapshots
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: always()
         with:
           name: snapshots_${{ matrix.containers }}
